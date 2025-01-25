@@ -21,7 +21,7 @@ local function getTool(name)
 		tool
 end
 
---/ BTools API
+--/ True BTools API
 local server = {}
 local function getTServer(tt)
 	return server[tt].Server
@@ -112,7 +112,7 @@ worksp.GrabBTools = function()
 end
 
 --/ Expose the API
-getgenv().LPI = {
+return {
 	["BTools"] = btools,
 	["Workspace"] = worksp
 }
