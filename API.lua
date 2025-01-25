@@ -15,10 +15,26 @@ local function getTool(name)
 	if char then
 		tool = char:FindFirstChild(name)
 	end
-	return
+	local res = 
 		workspace:FindFirstChild(name) or
 		speaker.Backpack:FindFirstChild(name) or
 		tool
+	if not res then
+		for _, v in workspace:GetChildren() do
+			if v:IsA("Tool") and v.Name == name then
+				return v
+			end
+			if v:IsA("Model") then
+				for _, v2 in v:GetChildren() do
+					if v2:IsA("Tool") and v2.Name == name then
+						return v
+					end
+				end
+			end
+		end
+	else
+		return res
+	end
 end
 
 --/ BTools API
