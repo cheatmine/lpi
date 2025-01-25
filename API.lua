@@ -104,11 +104,11 @@ worksp.GetBToolsDispenser = function()
 end
 worksp.GrabF3X = function()
 	local dispenser = worksp.GetF3XDispenser()
-	firetouchinterest(dispenser.Bricks.Bar.TouchInterest, getChar().HumanoidRootPart, 0)
+	firetouchinterest(dispenser.Bricks.Bar, getChar().HumanoidRootPart, 0)
 end
 worksp.GrabBTools = function()
 	local dispenser = worksp.GetBToolsDispenser()
-	firetouchinterest(dispenser.Bricks["Smooth Block Model"].TouchInterest, getChar().HumanoidRootPart, 0)
+	firetouchinterest(dispenser.Bricks["Smooth Block Model"], getChar().HumanoidRootPart, 0)
 end
 
 --/ Expose the API
