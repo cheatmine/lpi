@@ -21,7 +21,7 @@ local function getTool(name)
 		tool
 end
 
---/ True BTools API
+--/ BTools API
 local server = {}
 local function getTServer(tt)
 	return server[tt].Server
@@ -108,7 +108,7 @@ worksp.GrabF3X = function()
 end
 worksp.GrabBTools = function()
 	local dispenser = worksp.GetBToolsDispenser()
-	firetouchinterest(dispenser.Bricks["Smooth Brick Model"].TouchInterest, getChar().HumanoidRootPart, 0)
+	firetouchinterest(dispenser.Bricks["Smooth Block Model"].TouchInterest, getChar().HumanoidRootPart, 0)
 end
 
 --/ Expose the API
