@@ -61,7 +61,7 @@ btools.DestroyPart = function(orig)
 end
 btools.DestroyInstances = function(orig)
 	local f3x = getTool("F3X")
-	f3x["SyncAPl"]["ServerEndPoint\u200c"]:InvokeServer("UndoRemove", orig)
+	f3x["SyncAPl"]["ServerEndPoint‌"]:InvokeServer("UndoRemove", orig)
 end
 btools.DestroyInstance = function(orig)
 	btools.DestroyInstances({orig})
