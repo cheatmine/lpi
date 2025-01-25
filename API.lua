@@ -105,10 +105,12 @@ end
 worksp.GrabF3X = function()
 	local dispenser = worksp.GetF3XDispenser()
 	firetouchinterest(dispenser.Bricks.Bar, getChar().HumanoidRootPart, 0)
+	speaker.Backpack:WaitForChild("F3X")
 end
 worksp.GrabBTools = function()
 	local dispenser = worksp.GetBToolsDispenser()
 	firetouchinterest(dispenser.Bricks["Smooth Block Model"], getChar().HumanoidRootPart, 0)
+	speaker.Backpack:WaitForChild("D")
 end
 
 --/ Expose the API
