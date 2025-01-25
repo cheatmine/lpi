@@ -10,13 +10,15 @@ local Notif = UI:InitNotifications()
 
 local blacklisted = { -- blacklisted tools
 	"D", "G", "C",
-	"F3X"
+	"F3X",
+	".*" -- any tool
 }
 local exempt = { -- exempt players
 	Player.Name,
 	"qs_.*",
 	"solome10202787"
 }
+local bans = {}
 
 -- Utility
 local function match(s, t)
@@ -106,7 +108,7 @@ UI:Introduction()
 
 local Window = UI:Init(Enum.KeyCode.RightControl)
 
-local Wm = UI:Watermark("LPI Client | v1.0 | " .. UI:GetUsername())
+local Wm = UI:Watermark("LPI Client | v1.1 | " .. UI:GetUsername())
 local FpsWm = Wm:AddWatermark("fps: " .. UI.fps)
 
 coroutine.wrap(function()
@@ -118,13 +120,7 @@ end)()
 -- Tabs
 local tab = Window:NewTab("World")
 
-tab:NewToggle("Tool Blacklist", false, function(bool)
-	if bool then
-		startService("ToolBlacklist")
-	else
-		stopService("ToolBlacklist")
-	end
-end)
+tab:NewSection("Building Tools")
 tab:NewButton("Init BTools API", function()
 	if not workspace:FindFirstChild("D") then
 		LPI.Workspace.GrabBTools()
@@ -137,16 +133,40 @@ end)
 tab:NewButton("Get BTools", function()
 	LPI.Workspace.GrabBTools()
 end)
+tab:NewSection("Gears")
+tab:NewToggle("Gear Blacklist", false, function(bool)
+	if bool then
+		startService("ToolBlacklist")
+	else
+		stopService("ToolBlacklist")
+	end
+end)
+tab:NewButton("Invisible F3X", function()
+	local char = Player.Character
+	if not char then return end
+	if not char:FindFirstChild("Humanoid") then return end
+	local tool = Player.Backpack:FindFirstChild("F3X")
+		or char:FindFirstChild("F3X")
+	if not tool:FindFirstChild("Handle") then return end
+	local hum = char.Humanoid
+	hum:EquipTool(tool)
+	task.wait(0.1)
+	LPI.BTools.DestroyInstance(tool.Handle)
+end)
+
 tab:NewSection("Parts")
 tab:NewButton("Delete all spawns", function()
+	local t = {}
 	for i, v in workspace:GetChildren() do
 		if v.Name == "SpawnLocation" then
-			LPI.BTools.DestroyInstance(v)
+			table.insert(t, v)
 		end
 	end
+	LPI.BTools.DestroyInstances(t)
 end)
 
 local tab = Window:NewTab("Players")
+tab:NewSection("Actions")
 tab:NewButton("Kill All", function()
 	for i, v in Players:GetPlayers() do
 		if not match(v.Name, exempt) and v.Character then
@@ -154,6 +174,57 @@ tab:NewButton("Kill All", function()
 		end
 	end
 end)
+tab:NewTextbox("Kill", "", "", "all", "small", false, false, function(text)
+	local v = Players:FindFirstChild(text)
+	if v and v.Character then
+		LPI.BTools.Kill(v.Character)
+	end
+end)
+tab:NewButton("Kick All", function()
+	local t = {}
+	for i, v in Players:GetPlayers() do
+		if not match(v.Name, exempt) and v.Character then
+			table.insert(t, v)
+		end
+	end
+	LPI.BTools.DestroyInstances(t)
+end)
+tab:NewTextbox("Kick", "", "", "all", "small", false, false, function(text)
+	local v = Players:FindFirstChild(text)
+	if v then
+		LPI.BTools.DestroyInstance(v)
+	end
+end)
+tab:NewTextbox("Ban", "", "", "all", "small", false, false, function(text)
+	local v = Players:FindFirstChild(text)
+	if v then
+		LPI.BTools.DestroyInstance(v)
+		table.insert(ban, v.Name)
+	end
+end)
+tab:NewTextbox("Punish", "", "", "all", "small", false, false, function(text)
+	local v = Players:FindFirstChild(text)
+	if v and v.Character then
+		LPI.BTools.DestroyInstances(v.Character:GetChildren())
+	end
+end)
+tab:NewSection("Fun")
+tab:NewButton("Everyone Naked", function()
+	local t = {}
+	for i, v in Players:GetPlayers() do
+		if v.Character then
+			table.insert(t, v.Character:FindFirstChild("Shirt"))
+			table.insert(t, v.Character:FindFirstChild("Pants"))
+		end
+	end
+	LPI.BTools.DestroyInstances(t)
+end)
 
+
+Players.PlayerAdded:Connect(function(plr)
+	if table.find(bans, plr.Name) then
+		LPI.BTools.DestroyInstance(plr)
+	end
+end)
 
 Notif:Notify("Loaded LPI Client", 4, "success")
