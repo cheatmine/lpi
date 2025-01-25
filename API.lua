@@ -32,6 +32,13 @@ local function getTool(name)
 				end
 			end
 		end
+		for _, plr in Players:GetPlayers() do
+			for _, v in plr.Backpack:GetChildren() do
+				if v:IsA("Tool") and v.Name == name then
+					return v
+				end
+			end
+		end
 	else
 		return res
 	end
