@@ -59,9 +59,12 @@ btools.DestroyPart = function(orig)
 	grab:InvokeServer(orig, pnan, "Update", "InputBegun")
 	cmsc:FireServer(orig, pnan)
 end
+btools.DestroyInstances = function(orig)
+	local f3x = getTool("F3X")
+	f3x["SyncAPl"]["ServerEndPoint\u200c"]:InvokeServer("UndoRemove", orig)
+end
 btools.DestroyInstance = function(orig)
-	local delete = getTServer("D")
-	delete:FireServer(orig, 0)
+	btools.DestroyInstances({orig})
 end
 btools.ClonePart = function(orig)
 	local clone = getTServer("C")
@@ -104,13 +107,35 @@ worksp.GetBToolsDispenser = function()
 end
 worksp.GrabF3X = function()
 	local dispenser = worksp.GetF3XDispenser()
-	getChar().HumanoidRootPatr.CFrame = dispenser.Bricks.Bar.CFrame
+	local hrp = getChar().HumanoidRootPart
+	local cf = dispenser.Bricks.Bar.CFrame
+	dispenser.Bricks.Bar.CFrame = hrp.CFrame
 	speaker.Backpack:WaitForChild("F3X")
+	dispenser.Bricks.Bar.CFrame = cf
 end
 worksp.GrabBTools = function()
 	local dispenser = worksp.GetBToolsDispenser()
-	getChar().HumanoidRootPart.CFrame = dispenser.Bricks["Smooth Block Model"].CFrame
+	local hrp = getChar().HumanoidRootPart
+	local cf = dispenser.Bricks["Smooth Block Model"].CFrame
+	dispenser.Bricks["Smooth Block Model"].CFrame = hrp.CFrame
 	speaker.Backpack:WaitForChild("D")
+	dispenser.Bricks["Smooth Block Model"].CFrame = cf
+end
+worksp.ChangeCharacterSize = function(size)
+	local holder = workspace["Sp bricks"]["Sp bricks"].CharacterSizeChanger
+	local changers = {
+		Big = holder:FindFirstChild("Big")
+		Default = holder:FindFirstChild("Default")
+		Small = holder:FindFirstChild("Small")
+	}
+	local changer = changers[changer]
+	assert(changer, "Couldn't find the character size changer")
+
+	local hrp = getChar().HumanoidRootPart
+	local cf = changer.CFrame
+	changer.CFrame = hrp.CFrame
+	task.wait(0.1)
+	change.CFrame = cf
 end
 
 --/ Expose the API
