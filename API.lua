@@ -108,18 +108,18 @@ end
 worksp.GrabF3X = function()
 	local dispenser = worksp.GetF3XDispenser()
 	local hrp = getChar().HumanoidRootPart
-	local cf = dispenser.Bricks.Bar.CFrame
-	dispenser.Bricks.Bar.CFrame = hrp.CFrame
+	local cf = hrp.CFrame
+	hrp.CFrame = dispenser.Bricks.Barrp.CFrame
 	speaker.Backpack:WaitForChild("F3X")
-	dispenser.Bricks.Bar.CFrame = cf
+	hrp.CFrame = cf
 end
 worksp.GrabBTools = function()
 	local dispenser = worksp.GetBToolsDispenser()
 	local hrp = getChar().HumanoidRootPart
-	local cf = dispenser.Bricks["Smooth Block Model"].CFrame
-	dispenser.Bricks["Smooth Block Model"].CFrame = hrp.CFrame
+	local cf = hrp.CFrame
+	hrp.CFrame = dispenser.Bricks["Smooth Block Model"].CFrame
 	speaker.Backpack:WaitForChild("D")
-	dispenser.Bricks["Smooth Block Model"].CFrame = cf
+	hrp.CFrame = cf
 end
 worksp.ChangeCharacterSize = function(size)
 	local holder = workspace["Sp bricks"]["Sp bricks"].CharacterSizeChanger
