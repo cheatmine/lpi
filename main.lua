@@ -14,11 +14,12 @@ local blacklisted = { -- blacklisted tools
 	".*" -- any tool
 }
 local exempt = { -- exempt players
-	Player.Name,
-	"qs_.*",
-	"solome10202787"
+	Player.Name
 }
 local bans = {}
+
+-- Not configurable!
+local lockdown = false
 
 -- Utility
 local function match(s, t)
@@ -101,6 +102,22 @@ services.ToolBlacklist = {
 		end
 	end
 }
+services.Lockdown = {
+	start = function()
+		events.Lockdown = {}
+
+		table.insert(event.Lockdown, Players.PlayerAdded:Connect(function(plr)
+			if not match(plr.Name, exempt) then
+				LPI.Btools.DestroyInstance(plr)
+			end
+		end))
+	end,
+	stop = function()
+		for i, v in events.Lockdown do
+			v:Disconnect()
+		end
+	end
+}
 
 -- UI
 UI.title = "LPI Client"
@@ -108,7 +125,7 @@ UI:Introduction()
 
 local Window = UI:Init(Enum.KeyCode.RightControl)
 
-local Wm = UI:Watermark("LPI Client | v1.1 | " .. UI:GetUsername())
+local Wm = UI:Watermark("LPI Client | v1.2 | " .. UI:GetUsername())
 local FpsWm = Wm:AddWatermark("fps: " .. UI.fps)
 
 coroutine.wrap(function()
@@ -220,6 +237,18 @@ tab:NewButton("Everyone Naked", function()
 	LPI.BTools.DestroyInstances(t)
 end)
 
+local tab = Window:NewTab("Server")
+tab:NewSection("Management")
+tab:NewButton("Shutdown", function()
+	LPI.BTools.DestroyInstances(Players:GetPlayers())
+end)
+tab:NewToggle("Whitelist", false, function(bool)
+	if bool then
+		startService("Lockdown")
+	else
+		stopService("Lockdown")
+	end
+end)
 
 Players.PlayerAdded:Connect(function(plr)
 	if table.find(bans, plr.Name) then
