@@ -24,18 +24,18 @@ local function getTool(name)
 			if v:IsA("Tool") and v.Name == name then
 				return v
 			end
-			if v:IsA("Model") then
-				for _, v2 in v:GetChildren() do
-					if v2:IsA("Tool") and v2.Name == name then
-						return v
-					end
-				end
-			end
 		end
 		for _, plr in Players:GetPlayers() do
 			for _, v in plr.Backpack:GetChildren() do
 				if v:IsA("Tool") and v.Name == name then
 					return v
+				end
+			end
+			if plr.Character then
+				for _, v in plr.Character:GetChildren() do
+					if v:IsA("Tool") and v.Name == name then
+						return v
+					end
 				end
 			end
 		end
