@@ -109,7 +109,7 @@ worksp.GrabF3X = function()
 	local dispenser = worksp.GetF3XDispenser()
 	local hrp = getChar().HumanoidRootPart
 	local cf = hrp.CFrame
-	hrp.CFrame = dispenser.Bricks.Barrp.CFrame
+	hrp.CFrame = dispenser.Bricks.Bar.CFrame
 	speaker.Backpack:WaitForChild("F3X")
 	hrp.CFrame = cf
 end
