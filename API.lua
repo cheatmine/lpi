@@ -124,8 +124,8 @@ end
 worksp.ChangeCharacterSize = function(size)
 	local holder = workspace["Sp bricks"]["Sp bricks"].CharacterSizeChanger
 	local changers = {
-		Big = holder:FindFirstChild("Big")
-		Default = holder:FindFirstChild("Default")
+		Big = holder:FindFirstChild("Big"),
+		Default = holder:FindFirstChild("Default"),
 		Small = holder:FindFirstChild("Small")
 	}
 	local changer = changers[changer]
